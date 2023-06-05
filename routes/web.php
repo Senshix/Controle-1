@@ -1,4 +1,5 @@
 <?php
+
 use App\Http\Controllers\ControlEvent;
 use Illuminate\Support\Facades\Route;
 
@@ -12,8 +13,17 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', [ControlEvent::class, 'createTask'])->name('route-add-task');
 
-Route::get('/', [ControlEvent::class, 'createTask'])->name('route-add-task');
-Route::post('/', [ControlEvent::class, 'postcreateTask'])->name('postcreateTask');
+Route::get('/' , [ControlEvent::class , 'homePage'])->name('home');
 
+Route::post('/' , [ControlEvent::class , 'addProduit'])->name('route-add-home');
+
+Route::get('allproduit' , [ControlEvent::class , 'allProduit'])->name('route-all-liste');
+
+Route::get('editproduit/{id}' , [ControlEvent::class , 'editProduit'])->name('route-edit-liste');
+
+
+
+Route::put('updateproduit/{id}' , [ControlEvent::class , 'updateProduit'])->name('route-update-liste');
+
+Route::delete('deleteproduit{id}' , [ControlEvent::class , 'deleteProduit'])->name('route-delete-produit');

@@ -1,32 +1,71 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Event;
 use Illuminate\Http\Request;
 
 class ControlEvent extends Controller
 {
-    public function createTask(){
-        return view('welcome');
+    // selection de page Creatae comme page Home 
+    public function homePage() 
+    {
+        return view('Event.create');
     }
-    public function postcreateTask(Request $request){
+    // L'ajout de prduit
+    public function addProduit(Request $request)
+    {
         $request->validate([
-            'title'=>'required|min:5',
+            'title'=>'required|min:4',
+            'description'=>'required',
+            'Start_date'=>'required',
+            'End_date'=>'required', 
+            'Price'=>'required'
         ]);
 
-        $event = new Event();
+        $produit = new  event();
+        $produit->title = $request->title;
+        $produit->description = $request->description;
+        $produit->Start_date = $request->Start_date;
+        $produit->End_date = $request->End_date;
+        $produit->Price = $request->Price;
 
-        $event->title = $request->title;
+        $produit->save();
+        return redirect()->route('route-all-liste');
 
-        $event->description = $request->description;
+    }
+    // tous les produits va etre selecter pour la recherche 
+    public function allProduit(){
+        $produit = event::all();
 
-        $event->Start_Date = $request->Start_Date;
+        return view('event.liste' , compact('produit'));
+    }
+    // pour trouver le produit de id souhaiter
+    public function editProduit($id)
+    {
+        $produit = event::find($id);
+        return view('Event.edit' , compact('produit'));
 
-        $event->End_date = $request->End_date;
+    }
+    //  Mise a jour de produit
+    public function updateProduit(Request $request , $id){
 
-        $event->Price = $request->Price;
+        $produit = event::find($id);
+        $produit->title = $request->title;
+        $produit->description = $request->description;
+        $produit->Start_date = $request->Start_date;
+        $produit->End_date = $request->End_date;
+        $produit->Price = $request->Price;
+        $produit->save();
+       
 
-        $event->save();
-        return redirect()->route('route-all-task');
+
+        return redirect()->route('route-all-liste');
+        
+    }
+    // Supprimer l item 
+    public function deleteProduit($id){
+        event::destroy($id);
+        return redirect()->route('route-all-liste');
     }
 }
